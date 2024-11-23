@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  MultiRegionOptimizationLambda:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Handler: 'optimize_multi_region.optimize_multi_region'
+      Role: arn:aws:iam::148761683401:role/LambdaExecutionRole
+      Code:
+        S3Bucket: 'cost-optimizer-code-bucket'
+        S3Key: 'lambda/optimize_multi_region.zip'
+      Runtime: 'python3.8'
+      Timeout: 300
+      MemorySize: 128

@@ -1,0 +1,11 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Resources:
+  CostDataBucket:
+   Type: AWS::S3::Bucket
+   Properties:
+      BucketName: 'aws-cost-data-bucket'
+  
+  ModelDataBucket:
+   Type: AWS::S3::Bucket
+   Properties:
+      BucketName: 'sagemaker-model-data-bucket'

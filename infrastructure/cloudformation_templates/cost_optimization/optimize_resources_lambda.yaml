@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  CostForecastLambda:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Handler: 'optimize.optimize_resources'
+      Role: arn:aws:iam::148761683401:role/LambdaExecutionRole
+      Code:
+        S3Bucket: 'cost-optimizer-code-bucket'
+        S3Key: 'lambda/optimize_resources.zip'
+      Runtime: 'python3.12'
+      Timeout: 300
+      MemorySize: 128

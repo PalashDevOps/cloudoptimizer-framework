@@ -1,0 +1,13 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  CostForecastLambda:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Handler: 'generate_cost_forecast.generate_cost_forecast'
+      Role: arn:aws:iam::148761683401:role/LambdaExecutionRole
+      Code:
+        S3Bucket: 'cost-optimizer-code-bucket'
+        S3Key: 'lambda/cost_forecast.zip'
+      Runtime: 'python3.12'
+      Timeout: 300
+      MemorySize: 128

@@ -1,0 +1,98 @@
+name: Deploy Cloud Optimizer Framework
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy_iam_roles:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'us-west-1'
+
+      # Deploy IAM roles
+      - name: Deploy IAM Roles
+        run: |
+          aws cloudformation deploy \
+            --template-file infrastructure/cloudformation/iam/iam_roles.yaml \
+            --stack-name CloudOptimizerIAMRolesStack \
+            --capabilities CAPABILITY_IAM
+
+  deploy_cost_analysis_lambda:
+    runs-on: ubuntu-latest
+    needs: deploy_iam_roles
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Cost Analysis Lambda
+        run: |
+          aws cloudformation deploy \
+            --template-file infrastructure/cloudformation/cost_optimization/cost_analysis_lambda.yaml \
+            --stack-name CloudOptimizerCostAnalysisLambdaStack \
+            --capabilities CAPABILITY_IAM
+
+  deploy_forecasting_lambda:
+    runs-on: ubuntu-latest
+    needs: deploy_cost_analysis_lambda
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Forecasting Lambda
+        run: |
+          aws cloudformation deploy \
+            --template-file infrastructure/cloudformation/cost_optimization/forecasting_lambda.yaml \
+            --stack-name CloudOptimizerForecastingLambdaStack \
+            --capabilities CAPABILITY_IAM
+
+  deploy_optimization_lambda:
+    runs-on: ubuntu-latest
+    needs: deploy_forecasting_lambda
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Optimization Lambda
+        run: |
+          aws cloudformation deploy \
+            --template-file infrastructure/cloudformation/cost_optimization/optimize_resources_lambda.yaml \
+            --stack-name CloudOptimizerOptimizationLambdaStack \
+            --capabilities CAPABILITY_IAM
+
+  deploy_multi_region_lambda:
+    runs-on: ubuntu-latest
+    needs: deploy_optimization_lambda
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Multi-Region Optimization Lambda
+        run: |
+          aws cloudformation deploy \
+            --template-file infrastructure/cloudformation/cost_optimization/optimize_multi_region_lambda.yaml \
+            --stack-name CloudOptimizerMultiRegionLambdaStack \
+            --capabilities CAPABILITY_IAM
+
+  deploy_s3_buckets:
+    runs-on: ubuntu-latest
+    needs: deploy_multi_region_lambda
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy S3 Buckets
+        run: |
+          aws cloudformation deploy \
+            --template-file infrastructure/cloudformation/resources/s3_buckets.yaml \
+            --stack-name CloudOptimizerS3BucketsStack \
+            --capabilities CAPABILITY_IAM
