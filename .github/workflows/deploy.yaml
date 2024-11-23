@@ -23,7 +23,7 @@ jobs:
       - name: Deploy IAM Roles
         run: |
           aws cloudformation deploy \
-            --template-file infrastructure/cloudformation/IAM/iam_roles.yaml \
+            --template-file infrastructure/cloudformation_templates/IAM/iam_roles.yaml \
             --stack-name CloudOptimizerIAMRolesStack \
             --capabilities CAPABILITY_IAM
 
@@ -37,7 +37,7 @@ jobs:
       - name: Deploy Cost Analysis Lambda
         run: |
           aws cloudformation deploy \
-            --template-file infrastructure/cloudformation/cost_optimization/cost_analysis_lambda.yaml \
+            --template-file infrastructure/cloudformation_templates/cost_optimization/cost_analysis_lambda.yaml \
             --stack-name CloudOptimizerCostAnalysisLambdaStack \
             --capabilities CAPABILITY_IAM
 
@@ -51,7 +51,7 @@ jobs:
       - name: Deploy Forecasting Lambda
         run: |
           aws cloudformation deploy \
-            --template-file infrastructure/cloudformation/cost_optimization/forecasting_lambda.yaml \
+            --template-file infrastructure/cloudformation_templates/cost_optimization/forecasting_lambda.yaml \
             --stack-name CloudOptimizerForecastingLambdaStack \
             --capabilities CAPABILITY_IAM
 
@@ -65,7 +65,7 @@ jobs:
       - name: Deploy Optimization Lambda
         run: |
           aws cloudformation deploy \
-            --template-file infrastructure/cloudformation/cost_optimization/optimize_resources_lambda.yaml \
+            --template-file infrastructure/cloudformation_templates/cost_optimization/optimize_resources_lambda.yaml \
             --stack-name CloudOptimizerOptimizationLambdaStack \
             --capabilities CAPABILITY_IAM
 
@@ -79,7 +79,7 @@ jobs:
       - name: Deploy Multi-Region Optimization Lambda
         run: |
           aws cloudformation deploy \
-            --template-file infrastructure/cloudformation/cost_optimization/optimize_multi_region_lambda.yaml \
+            --template-file infrastructure/cloudformation_templates/cost_optimization/optimize_multi_region_lambda.yaml \
             --stack-name CloudOptimizerMultiRegionLambdaStack \
             --capabilities CAPABILITY_IAM
 
@@ -93,6 +93,6 @@ jobs:
       - name: Deploy S3 Buckets
         run: |
           aws cloudformation deploy \
-            --template-file infrastructure/cloudformation/S3/s3_buckets.yaml \
+            --template-file infrastructure/cloudformation_templates/S3/s3_buckets.yaml \
             --stack-name CloudOptimizerS3BucketsStack \
             --capabilities CAPABILITY_IAM
