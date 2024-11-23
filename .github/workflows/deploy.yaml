@@ -23,7 +23,7 @@ jobs:
       - name: Deploy IAM Roles
         run: |
           aws cloudformation deploy \
-            --template-file infrastructure/cloudformation/iam/iam_roles.yaml \
+            --template-file infrastructure/cloudformation/IAM/iam_roles.yaml \
             --stack-name CloudOptimizerIAMRolesStack \
             --capabilities CAPABILITY_IAM
 
@@ -93,6 +93,6 @@ jobs:
       - name: Deploy S3 Buckets
         run: |
           aws cloudformation deploy \
-            --template-file infrastructure/cloudformation/resources/s3_buckets.yaml \
+            --template-file infrastructure/cloudformation/S3/s3_buckets.yaml \
             --stack-name CloudOptimizerS3BucketsStack \
             --capabilities CAPABILITY_IAM
